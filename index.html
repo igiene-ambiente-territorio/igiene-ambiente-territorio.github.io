@@ -3,6 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Igiene dell'ambiente e del territorio</title>
 
 <style>
@@ -12,6 +13,33 @@ body{
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background:#f4f7fb;
     color:#333;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    header {
+        padding: 30px 10px;
+    }
+    header h1 {
+        font-size: 28px;
+    }
+    header h2 {
+        font-size: 16px;
+    }
+    main {
+        padding: 20px 5px;
+    }
+    .card {
+        padding: 15px 10px;
+    }
+    .links {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .button {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
 }
 
 header{
@@ -133,6 +161,7 @@ container.innerHTML = "";
 
 results.data.forEach((row) => {
 
+
 const card = document.createElement("div");
 card.className = "card";
 
@@ -140,6 +169,14 @@ card.className = "card";
 const h2 = document.createElement("h2");
 h2.textContent = row.title;
 card.appendChild(h2);
+
+// content HTML
+if(row.content && row.content.trim() !== ""){
+    const contentDiv = document.createElement("div");
+    contentDiv.innerHTML = row.content;
+    contentDiv.style.marginBottom = "15px";
+    card.appendChild(contentDiv);
+}
 
 const links = document.createElement("div");
 links.className = "links";
