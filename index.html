@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<title>Igiene dell'ambiente e del territorio</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background:#f4f7fb;
+    color:#333;
+}
+
+header{
+    background:linear-gradient(135deg,#2a7de1,#40b3ff);
+    color:white;
+    padding:50px 20px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:42px;
+    font-weight:600;
+}
+
+header h2{
+    margin-top:10px;
+    font-weight:400;
+    opacity:0.9;
+}
+
+main{
+    max-width:900px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:25px 30px;
+    margin-bottom:25px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+    transition:transform .15s, box-shadow .15s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 6px 20px rgba(0,0,0,0.12);
+}
+
+.card h2{
+    margin-top:0;
+    margin-bottom:15px;
+    color:#1e4f8a;
+}
+
+.links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.button{
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:6px;
+    font-size:14px;
+    background:#2a7de1;
+    color:white;
+    transition:background .2s;
+}
+
+.button:hover{
+    background:#1d63b7;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    font-size:14px;
+    color:#666;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Igiene dell'ambiente e del territorio</h1>
+<h2>Materiale didattico</h2>
+</header>
+
+<main>
+<div id="content">Loading...</div>
+</main>
+
+<footer>
+Materiale didattico
+</footer>
+
+<script type="module">
+
+import Papa from "https://cdn.jsdelivr.net/npm/papaparse@5.4.1/+esm";
+
+// =============================
+// CONFIGURAZIONE
+// =============================
+const showSlidesLink = true;
+const showPrintableSlides = false;
+const showMapLink = true;
+const showTextLink = true;
+
+const sheetBaseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTtHwSLmnxjW2c-PZP6IFxxYRSLENYdplcf_wxcAYo2j5mStHoZpgYUCObuQS7M3a06293CkZA_2dKr/pub?gid=0&single=true&output=csv";
+
+const slidesBaseUrl = "https://insegnante076.github.io/teachingTools/tools/reveal-md-slideshow/?csv=" + encodeURIComponent(sheetBaseUrl) + "&id=";
+const textBaseUrl = "https://insegnante076.github.io/teachingTools/tools/html-content-concat-viewer/?csv=" + encodeURIComponent(sheetBaseUrl) + "&id=";
+
+Papa.parse(sheetBaseUrl, {
+download: true,
+header: true,
+skipEmptyLines: true,
+
+complete: function(results) {
+
+const container = document.getElementById("content");
+container.innerHTML = "";
+
+results.data.forEach((row) => {
+
+const card = document.createElement("div");
+card.className = "card";
+
+// titolo
+const h2 = document.createElement("h2");
+h2.textContent = row.title;
+card.appendChild(h2);
+
+const links = document.createElement("div");
+links.className = "links";
+
+const fullSlidesUrl = slidesBaseUrl + row.id;
+const fullTextUrl = textBaseUrl + row.id;
+
+// verifica contenuto slides
+const hasSlidesContent = ["slides_p1","slides_p2","slides_p3"].some(col => {
+return row[col] && row[col].trim() !== "";
+});
+
+// link slides
+if(showSlidesLink && hasSlidesContent){
+const a = document.createElement("a");
+a.href = fullSlidesUrl;
+a.textContent = "Slides";
+a.target="_blank";
+a.className="button";
+links.appendChild(a);
+}
+
+// slides stampabili
+if(showPrintableSlides && hasSlidesContent){
+const a = document.createElement("a");
+a.href = fullSlidesUrl + "&print-pdf";
+a.textContent="Slides stampabili";
+a.target="_blank";
+a.className="button";
+links.appendChild(a);
+}
+
+// link mappa
+if(showMapLink && row.map_html && row.map_html.trim() !== ""){
+const a = document.createElement("a");
+a.href="#";
+a.textContent="Mappa";
+a.className="button";
+
+a.onclick=function(e){
+e.preventDefault();
+const newWindow = window.open();
+newWindow.document.write(row.map_html);
+newWindow.document.close();
+};
+
+links.appendChild(a);
+}
+
+// verifica contenuto testo
+const hasTextContent = ["text_p1","text_p2","text_p3"].some(col => {
+return row[col] && row[col].trim() !== "";
+});
+
+if(showTextLink && hasTextContent){
+const a = document.createElement("a");
+a.href = fullTextUrl;
+a.textContent="Testo didattico";
+a.target="_blank";
+a.className="button";
+links.appendChild(a);
+}
+
+card.appendChild(links);
+container.appendChild(card);
+
+});
+
+},
+
+error: function(err){
+document.getElementById("content").innerText = "Error loading data.";
+console.error(err);
+}
+
+});
+
+</script>
+
+</body>
+</html>
