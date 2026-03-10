@@ -1,0 +1,108 @@
+/* main stylesheet for site */
+
+body{
+    margin:0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background:#f4f7fb;
+    color:#333;
+}
+
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    header {
+        padding: 30px 10px;
+    }
+    header h1 {
+        font-size: 28px;
+    }
+    header h2 {
+        font-size: 16px;
+    }
+    main {
+        padding: 20px 5px;
+    }
+    .card {
+        padding: 15px 10px;
+    }
+    .links {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .button {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+}
+
+header{
+    background:linear-gradient(135deg,#2a7de1,#40b3ff);
+    color:white;
+    padding:50px 20px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:42px;
+    font-weight:600;
+}
+
+header h2{
+    margin-top:10px;
+    font-weight:400;
+    opacity:0.9;
+}
+
+main{
+    max-width:900px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:25px 30px;
+    margin-bottom:25px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+    transition:transform .15s, box-shadow .15s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 6px 20px rgba(0,0,0,0.12);
+}
+
+.card h2{
+    margin-top:0;
+    margin-bottom:15px;
+    color:#1e4f8a;
+}
+
+.links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.button{
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:6px;
+    font-size:14px;
+    background:#2a7de1;
+    color:white;
+    transition:background .2s;
+}
+
+.button:hover{
+    background:#1d63b7;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    font-size:14px;
+    color:#666;
+}
